@@ -14,6 +14,14 @@ import Alert from '@mui/material/Alert';
 
 const theme = createTheme();
 
+const server = {
+    ip:"localhost",
+    port:"3005",
+    protocol:"https"
+  }
+
+const serverURL = `${server.protocol}://${server.ip}:${server.port}`
+
 export default function ChangePass() {
     const [passwordConfig, setPasswordConfig] = useState([]);
     const {enqueueSnackbar} = useSnackbar();
@@ -26,7 +34,7 @@ export default function ChangePass() {
     },[])
 
     const getPasswordConfig = () => {
-        Axios.get('http://localhost:3005/passwordRequirements')
+        Axios.get(`${serverURL}/passwordRequirements`)
             .then((response) => {
                 setPasswordConfig([response.data]);
             })
@@ -40,7 +48,7 @@ export default function ChangePass() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if (data.get('newPassword') === data.get('validatePassword')) {
-            Axios.post("http://localhost:3005/changePassword", {
+            Axios.post(`${serverURL}/changePassword`, {
                     currentPassword: data.get('currentPassword'),
                     newPassword: data.get('newPassword'),
                 }, {headers: headers}

@@ -20,6 +20,14 @@ import Tooltip from "@mui/material/Tooltip";
 
 const theme = createTheme();
 
+const server = {
+  ip:"localhost",
+  port:"3005",
+  protocol:"https"
+}
+
+const serverURL = `${server.protocol}://${server.ip}:${server.port}`
+
 export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [noteList, setNoteList] = useState([]);
@@ -32,7 +40,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (headers["x-access-token"]) {
-      Axios.get("http://localhost:3005/authentication_status", {
+      Axios.get(`${serverURL}/authentication_status`, {
         headers: headers,
       })
         .then((response) => {
@@ -50,7 +58,7 @@ export default function Dashboard() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     Axios.post(
-      "http://localhost:3005/addNote",
+      `${serverURL}/addNote`,
       {
         title: data.get("title"),
         content: data.get("content"),
@@ -76,7 +84,7 @@ export default function Dashboard() {
 
   const searchNots = (text) => {
     Axios.post(
-      "http://localhost:3005/Search",
+      `${serverURL}/Search`,
       {
         search: text,
       },
@@ -93,7 +101,7 @@ export default function Dashboard() {
 
   const handleRemoveNote = (item) => {
     Axios.post(
-      "http://localhost:3005/removeNote",
+      `${serverURL}/removeNote`,
       {
         title: item.title,
       },
@@ -106,11 +114,6 @@ export default function Dashboard() {
         const massage = error.response ? error.response.data : "Network Error";
         enqueueSnackbar(massage, { variant: "error" });
       });
-  };
-
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
   };
 
   const fabStyle = {
@@ -226,7 +229,7 @@ export default function Dashboard() {
                           <Typography gutterBottom variant="h5" component="div">
                             {item.title}
                           </Typography>
-                          {/* <div contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }}></div> XSS */}
+                          {/* <div contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }}></div> //XSS */}
                           <Typography variant="body2" color="text.secondary">
                             {item.content}
                           </Typography>

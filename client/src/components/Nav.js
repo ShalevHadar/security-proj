@@ -12,17 +12,27 @@ export default function Nav() {
     const [flag, setFlag] = useState(false);
     const history = useHistory();
 
+    const server = {
+        ip:"localhost",
+        port:"3005",
+        protocol:"https"
+      }
+    
+    const serverURL = `${server.protocol}://${server.ip}:${server.port}`
+
 
     useEffect(() => {
         const headers = {
             "x-access-token": localStorage.getItem('token'),
         }
         if (headers["x-access-token"]) {
-            Axios.get("http://localhost:3005/authentication_status",
+            Axios.get(`${serverURL}/authentication_status`,
                 {headers: headers}
             ).then((response) => {
                 setAuthStatus(true);
             }).catch((error) => {
+                console.log("error");
+                console.log(error);
                 setAuthStatus(false);
             });
         } else {

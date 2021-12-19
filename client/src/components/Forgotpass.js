@@ -13,13 +13,21 @@ import {useSnackbar} from "notistack";
 
 const theme = createTheme();
 
+const server = {
+    ip:"localhost",
+    port:"3005",
+    protocol:"https"
+  }
+
+const serverURL = `${server.protocol}://${server.ip}:${server.port}`
+
 export default function Forgotpass() {
     const {enqueueSnackbar} = useSnackbar();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        Axios.post("http://localhost:3005/forgotpass", {
+        Axios.post(`${serverURL}/forgotpass`, {
             email: data.get("email"),
         })
             .then((response) => {

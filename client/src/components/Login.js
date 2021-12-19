@@ -25,6 +25,14 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const theme = createTheme();
 
+const server = {
+    ip:"localhost",
+    port:"3005",
+    protocol:"https"
+  }
+
+const serverURL = `${server.protocol}://${server.ip}:${server.port}`
+
 export default function Login() {
     const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
@@ -52,7 +60,7 @@ export default function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        Axios.post("http://localhost:3005/login", {
+        Axios.post(`${serverURL}/login`, {
             email: data.get('email'),
             password: UserPasswordvalues.password,
         }).then((response) => {
